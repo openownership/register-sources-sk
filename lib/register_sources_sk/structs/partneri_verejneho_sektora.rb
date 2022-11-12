@@ -1,7 +1,7 @@
 require 'register_sources_sk/types'
 
-require 'register-sources-sk/structs/adresa'
-require 'register-sources-sk/structs/partner'
+require 'register_sources_sk/structs/adresa'
+require 'register_sources_sk/structs/partner'
 
 module RegisterSourcesSk
   class PartneriVerejnehoSektora < Dry::Struct # Public Sector Partners
