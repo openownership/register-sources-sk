@@ -2,6 +2,7 @@ require 'register_sources_sk/types'
 
 require 'register_sources_sk/structs/adresa'
 require 'register_sources_sk/structs/partner'
+require 'register_sources_sk/structs/statna_prislusnost'
 
 module RegisterSourcesSk
   class PartneriVerejnehoSektora < Dry::Struct # Public Sector Partners
@@ -19,7 +20,7 @@ module RegisterSourcesSk
     attribute? :PlatnostOd, Types::Nominal::DateTime.optional # Valid from
     attribute? :PlatnostDo, Types::Nominal::DateTime.optional # Valid to
     attribute? :Partner, Partner.optional # Partner
-    attribute? :PravnaForma, Types::String.optional # Legal form
+    attribute? :PravnaForma, StatnaPrislusnost.optional # Legal form
     attribute? :Adresa, Adresa.optional # Address
   end
 end
