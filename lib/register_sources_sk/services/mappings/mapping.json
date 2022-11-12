@@ -1,0 +1,215 @@
+{
+  "properties": {
+    "etag": {
+      "type": "keyword"
+    },
+    "data": {
+      "properties": {
+        "@odata.context": {
+          "type": "keyword"
+        },
+        "Id": {
+          "type": "integer"
+        },
+        "CisloVlozky": {
+          "type": "integer"
+        },
+        "PartneriVerejnehoSektora": {
+          "type": "nested",
+          "include_in_parent": true,
+          "properties": {
+            "Id": {
+              "type": "integer"
+            },
+            "Meno": {
+              "type": "keyword"
+            },
+            "Priezvisko": {
+              "type": "keyword"
+            },
+            "DatumNarodenia": {
+              "type": "keyword"
+            },
+            "TitulPred": {
+              "type": "keyword"
+            },
+            "TitulZa": {
+              "type": "keyword"
+            },
+            "ObchodneMeno": {
+              "type": "keyword"
+            },
+            "Ico": {
+              "type": "keyword"
+            },
+            "FormaOsoby": {
+              "type": "keyword"
+            },
+            "PlatnostOd": {
+              "type": "date",
+              "format": "date_optional_time"
+            },
+            "PlatnostDo": {
+              "type": "date",
+              "format": "date_optional_time"
+            },
+            "Partner": {
+              "type": "nested",
+              "include_in_parent": true,
+              "properties": {
+                "Id": {
+                  "type": "integer"
+                },
+                "CisloVlozky": {
+                  "type": "integer"
+                }
+              }
+            },
+            "PravnaForma": {
+              "type": "keyword"
+            },
+            "Adresa": {
+              "type": "nested",
+              "include_in_parent": true,
+              "properties": {
+                "Id": {
+                  "type": "integer"
+                },
+                "MenoUlice": {
+                  "type": "keyword"
+                },
+                "OrientacneCislo": {
+                  "type": "keyword"
+                },
+                "SupisneCislo": {
+                  "type": "keyword"
+                },
+                "Mesto": {
+                  "type": "keyword"
+                },
+                "MestoKod": {
+                  "type": "keyword"
+                },
+                "Psc": {
+                  "type": "keyword"
+                },
+                "Identifikator": {
+                  "type": "keyword"
+                }
+              }
+            }
+          }
+        },
+        "KonecniUzivateliaVyhod": {
+          "type": "nested",
+          "include_in_parent": true,
+          "properties": {
+            "Id": {
+              "type": "integer"
+            },
+            "Meno": {
+              "type": "keyword"
+            },
+            "Priezvisko": {
+              "type": "keyword"
+            },
+            "DatumNarodenia": {
+              "type": "keyword"
+            },
+            "TitulPred": {
+              "type": "keyword"
+            },
+            "TitulZa": {
+              "type": "keyword"
+            },
+            "JeVerejnyCinitel": {
+              "type": "keyword"
+            },
+            "ObchodneMeno": {
+              "type": "keyword"
+            },
+            "Ico": {
+              "type": "keyword"
+            },
+            "PlatnostOd": {
+              "type": "date",
+              "format": "date_optional_time"
+            },
+            "PlatnostDo": {
+              "type": "date",
+              "format": "date_optional_time"
+            },
+            "Partner": {
+              "type": "nested",
+              "include_in_parent": true,
+              "properties": {
+                "Id": {
+                  "type": "integer"
+                },
+                "CisloVlozky": {
+                  "type": "integer"
+                }
+              }
+            },
+            "StatnaPrislusnost": {
+              "type": "nested",
+              "include_in_parent": true,
+              "properties": {
+                "Id": {
+                  "type": "integer"
+                },
+                "Meno": {
+                  "type": "keyword"
+                },
+                "StatistickyKod": {
+                  "type": "keyword"
+                },
+                "PlatnostOd": {
+                  "type": "date",
+                  "format": "date_optional_time"
+                },
+                "PlatnostDo": {
+                  "type": "date",
+                  "format": "date_optional_time"
+                }
+              }
+            },
+            "PravnaForma": {
+              "type": "keyword"
+            },
+            "Adresa": {
+              "type": "nested",
+              "include_in_parent": true,
+              "properties": {
+                "Id": {
+                  "type": "integer"
+                },
+                "MenoUlice": {
+                  "type": "keyword"
+                },
+                "OrientacneCislo": {
+                  "type": "keyword"
+                },
+                "SupisneCislo": {
+                  "type": "keyword"
+                },
+                "Mesto": {
+                  "type": "keyword"
+                },
+                "MestoKod": {
+                  "type": "keyword"
+                },
+                "Psc": {
+                  "type": "keyword"
+                },
+                "Identifikator": {
+                  "type": "keyword"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
