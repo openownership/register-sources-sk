@@ -123,7 +123,7 @@
               "type": "keyword"
             },
             "JeVerejnyCinitel": {
-              "type": "keyword"
+              "type": "boolean"
             },
             "ObchodneMeno": {
               "type": "keyword"
@@ -175,7 +175,27 @@
               }
             },
             "PravnaForma": {
-              "type": "keyword"
+              "type": "nested",
+              "include_in_parent": true,
+              "properties": {
+                "Id": {
+                  "type": "integer"
+                },
+                "Meno": {
+                  "type": "keyword"
+                },
+                "StatistickyKod": {
+                  "type": "keyword"
+                },
+                "PlatnostOd": {
+                  "type": "date",
+                  "format": "date_optional_time"
+                },
+                "PlatnostDo": {
+                  "type": "date",
+                  "format": "date_optional_time"
+                }
+              }
             },
             "Adresa": {
               "type": "nested",

@@ -14,7 +14,7 @@ module RegisterSourcesSk
     attribute? :DatumNarodenia, Types::String.optional # Date of birth
     attribute? :TitulPred, Types::String.optional # Title Prev
     attribute? :TitulZa, Types::String.optional # Title ?
-    attribute? :JeVerejnyCinitel, Types::String.optional # public figure
+    attribute? :JeVerejnyCinitel, Types::Params::Bool.optional # public figure
     attribute? :ObchodneMeno, Types::String.optional # Business name
     attribute? :Ico, Types::String.optional # ?
     attribute? :PlatnostOd, Types::Nominal::DateTime.optional # Valid from
