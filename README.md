@@ -1,6 +1,6 @@
 # Register Sources SK
 
-Register Sources SK is designed for inclusion as a library for use with the beneficial ownership data from Slovakia's Central Business Register.
+Register Sources SK is designed for inclusion as a library for use with the beneficial ownership data from the Public Sector Partners Register collected by the Ministry of Justice of the Slovak Republic.
 
 There are two primary purposes for this library:
 
