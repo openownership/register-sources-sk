@@ -66,6 +66,99 @@ module RegisterSourcesSk
         true
       end
 
+      def get_by_bods_identifiers(identifiers)
+        return [] unless identifiers
+
+        # Person Statement
+        # RegisterSourcesBods::Identifier.new(
+        #   id: sk_record.Id.to_s,
+        #   schemeName: 'SK Register Partnerov Verejného Sektora',
+        # )
+
+        # Child Entity Statement
+        # right_now = Time.zone.now.iso8601
+        # @item = record.PartneriVerejnehoSektora.max_by do |p|
+        #   p.PlatnostDo.nil? ? right_now : p.PlatnostDo
+        # end
+        # RegisterSourcesBods::Identifier.new(
+        #   scheme: 'SK-ORSR',
+        #   schemeName: 'Ministry of Justice Business Register',
+        #   id: item.Ico
+        # ),
+
+        person_ids = []
+        company_ids = []
+        identifiers.each do |identifier|
+          case identifier.schemeName
+          when 'SK Register Partnerov Verejného Sektora'
+            person_ids << identifier.id
+          when 'Ministry of Justice Business Register'
+            company_ids << identifier.id
+          end
+        end
+
+        return [] if company_ids.empty? && person_ids.empty?
+
+        process_results(
+          client.search(
+            index: index,
+            body: {
+              query: {
+                bool: {
+                  should: company_ids.map { |company_id|
+                    {
+                      bool: {
+                        must: [
+                          { match: { "company_number": { query: company_id } } },
+                        ]
+                      }
+                    }
+                  } + company_ids.map { |company_id|
+                    {
+                      bool: {
+                        must: [
+                          {
+                            nested: {
+                              path: "data.identification",
+                              query: {
+                                bool: {
+                                  must: [
+                                    { match: { "data.identification.registration_number": { query: company_id } } },
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  } + links.map { |link|
+                    {
+                      bool: {
+                        must: [
+                          {
+                            nested: {
+                              path: "data.links",
+                              query: {
+                                bool: {
+                                  must: [
+                                    { match: { "data.links.self": { query: link } } },
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          )
+        ).map(&:record)
+      end
+
       private
 
       attr_reader :client, :index
