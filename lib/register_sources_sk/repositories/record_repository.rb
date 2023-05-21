@@ -91,7 +91,7 @@ module RegisterSourcesSk
         identifiers.each do |identifier|
           case identifier.schemeName
           when 'SK Register Partnerov Verejného Sektora'
-            person_ids << identifier.id
+            person_ids << identifier.id.to_i
           when 'Ministry of Justice Business Register'
             company_ids << identifier.id
           end
@@ -105,11 +105,23 @@ module RegisterSourcesSk
             body: {
               query: {
                 bool: {
-                  should: company_ids.map { |company_id|
+                  should: person_ids.map { |person_id|
                     {
                       bool: {
                         must: [
-                          { match: { "company_number": { query: company_id } } },
+                          {
+                            nested: {
+                              path: "data",
+                              query: {
+                                bool: {
+                                  must: [
+                                    # TODO: filter correct type
+                                    { match: { "data.Id": { query: person_id } } },
+                                  ]
+                                }
+                              }
+                            }
+                          }
                         ]
                       }
                     }
@@ -119,30 +131,11 @@ module RegisterSourcesSk
                         must: [
                           {
                             nested: {
-                              path: "data.identification",
+                              path: "data.PartneriVerejnehoSektora",
                               query: {
                                 bool: {
                                   must: [
-                                    { match: { "data.identification.registration_number": { query: company_id } } },
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  } + links.map { |link|
-                    {
-                      bool: {
-                        must: [
-                          {
-                            nested: {
-                              path: "data.links",
-                              query: {
-                                bool: {
-                                  must: [
-                                    { match: { "data.links.self": { query: link } } },
+                                    { match: { "data.PartneriVerejnehoSektora.Ico": { query: company_id } } },
                                   ]
                                 }
                               }
