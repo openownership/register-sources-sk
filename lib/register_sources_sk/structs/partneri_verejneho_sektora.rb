@@ -5,7 +5,8 @@ require 'register_sources_sk/structs/partner'
 require 'register_sources_sk/structs/statna_prislusnost'
 
 module RegisterSourcesSk
-  class PartneriVerejnehoSektora < Dry::Struct # Public Sector Partners
+  # Public Sector Partners
+  class PartneriVerejnehoSektora < Dry::Struct
     transform_keys(&:to_sym)
 
     attribute? :Id, Types::Nominal::Integer.optional

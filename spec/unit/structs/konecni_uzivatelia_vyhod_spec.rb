@@ -3,29 +3,29 @@ require 'register_sources_sk/structs/konecni_uzivatelia_vyhod'
 RSpec.describe RegisterSourcesSk::KonecniUzivateliaVyhod do
   let(:valid_konecni_uzivatelia_vyhod) do
     {
-      "Id": 1,
-      "Meno": "Example",
-      "Priezvisko": "Person 1",
-      "DatumNarodenia": "1950-01-01T00:00:00+02:00",
-      "PlatnostOd": "2015-01-01T00:00:00+01:00",
-      "PlatnostDo": nil,
-      "StatnaPrislusnost": {
-        "StatistickyKod": "703"
+      Id: 1,
+      Meno: "Example",
+      Priezvisko: "Person 1",
+      DatumNarodenia: "1950-01-01T00:00:00+02:00",
+      PlatnostOd: "2015-01-01T00:00:00+01:00",
+      PlatnostDo: nil,
+      StatnaPrislusnost: {
+        StatistickyKod: "703",
       },
-      "Adresa": {
-        "MenoUlice": "Example Street",
-        "OrientacneCislo": "1234/1",
-        "Mesto": "Example Place",
-        "Psc": "12345"
-      }
+      Adresa: {
+        MenoUlice: "Example Street",
+        OrientacneCislo: "1234/1",
+        Mesto: "Example Place",
+        Psc: "12345",
+      },
     }
   end
 
   it 'allows valid' do
     konecni_uzivatelia_vyhod = described_class[valid_konecni_uzivatelia_vyhod]
 
-    expect(konecni_uzivatelia_vyhod).to be_a RegisterSourcesSk::KonecniUzivateliaVyhod
-    
+    expect(konecni_uzivatelia_vyhod).to be_a described_class
+
     expect(konecni_uzivatelia_vyhod.Id).to eq 1
     expect(konecni_uzivatelia_vyhod.Meno).to eq "Example"
     expect(konecni_uzivatelia_vyhod.Priezvisko).to eq "Person 1"

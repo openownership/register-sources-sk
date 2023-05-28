@@ -4,7 +4,7 @@ require 'register_sources_sk/structs/record'
 
 module RegisterSourcesSk
   module Repositories
-    class RecordRepository      
+    class RecordRepository
       UnknownRecordKindError = Class.new(StandardError)
       ElasticsearchError = Class.new(StandardError)
 
@@ -18,23 +18,23 @@ module RegisterSourcesSk
       def get(etag)
         process_results(
           client.search(
-            index: index,
+            index:,
             body: {
               query: {
                 bool: {
                   must: [
                     {
                       match: {
-                        "etag": {
-                          query: etag
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          )
+                        etag: {
+                          query: etag,
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ),
         ).first&.record
       end
 
@@ -45,14 +45,14 @@ module RegisterSourcesSk
           raise 'no etag' unless record.etag
 
           {
-            index:  {
+            index: {
               _index: index,
               _id: record.etag,
               data: {
                 data: record.to_h,
-                etag: record.etag
-              }
-            }
+                etag: record.etag,
+              },
+            },
           }
         end
 

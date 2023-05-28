@@ -1,7 +1,8 @@
 require 'register_sources_sk/types'
 
 module RegisterSourcesSk
-  class StatnaPrislusnost < Dry::Struct # Nationality
+  # Nationality
+  class StatnaPrislusnost < Dry::Struct
     transform_keys(&:to_sym)
 
     attribute? :Id, Types::Nominal::Integer.optional

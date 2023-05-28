@@ -1,7 +1,8 @@
 require 'register_sources_sk/types'
 
 module RegisterSourcesSk
-  class Adresa < Dry::Struct # Address
+  # Address
+  class Adresa < Dry::Struct
     transform_keys(&:to_sym)
 
     attribute? :Id, Types::Nominal::Integer.optional
