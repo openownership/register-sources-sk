@@ -1,53 +1,53 @@
 require 'register_sources_sk/repositories/record_repository'
 
 RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
-  subject { described_class.new(client: client, index: index) }
+  subject { described_class.new(client:, index:) }
 
   let(:client) { double 'client' }
   let(:index) { double 'index' }
 
-  let(:record_data) {
+  let(:record_data) do
     {
-      "Id": 1,
-      "PartneriVerejnehoSektora": [
+      Id: 1,
+      PartneriVerejnehoSektora: [
         {
-          "Id": 1,
-          "Meno": nil,
-          "Priezvisko": nil,
-          "DatumNarodenia": nil,
-          "ObchodneMeno": "Example Slovak Company",
-          "Ico": "1234567",
-          "PlatnostOd": "2015-01-01T00:00:00+01:00",
-          "PlatnostDo": nil,
-          "Adresa": {
-            "MenoUlice": "Example Street",
-            "OrientacneCislo": "1234/1",
-            "Mesto": "Example Place",
-            "Psc": "12345"
-          }
-        }
-      ],
-      "KonecniUzivateliaVyhod": [
-        {
-          "Id": 1,
-          "Meno": "Example",
-          "Priezvisko": "Person 1",
-          "DatumNarodenia": "1950-01-01T00:00:00+02:00",
-          "PlatnostOd": "2015-01-01T00:00:00+01:00",
-          "PlatnostDo": nil,
-          "StatnaPrislusnost": {
-            "StatistickyKod": "703"
+          Id: 1,
+          Meno: nil,
+          Priezvisko: nil,
+          DatumNarodenia: nil,
+          ObchodneMeno: "Example Slovak Company",
+          Ico: "1234567",
+          PlatnostOd: "2015-01-01T00:00:00+01:00",
+          PlatnostDo: nil,
+          Adresa: {
+            MenoUlice: "Example Street",
+            OrientacneCislo: "1234/1",
+            Mesto: "Example Place",
+            Psc: "12345",
           },
-          "Adresa": {
-            "MenoUlice": "Example Street",
-            "OrientacneCislo": "1234/1",
-            "Mesto": "Example Place",
-            "Psc": "12345"
-          }
-        }
-      ]
+        },
+      ],
+      KonecniUzivateliaVyhod: [
+        {
+          Id: 1,
+          Meno: "Example",
+          Priezvisko: "Person 1",
+          DatumNarodenia: "1950-01-01T00:00:00+02:00",
+          PlatnostOd: "2015-01-01T00:00:00+01:00",
+          PlatnostDo: nil,
+          StatnaPrislusnost: {
+            StatistickyKod: "703",
+          },
+          Adresa: {
+            MenoUlice: "Example Street",
+            OrientacneCislo: "1234/1",
+            Mesto: "Example Place",
+            Psc: "12345",
+          },
+        },
+      ],
     }
-  }
+  end
 
   describe '#get' do
     context 'when client has data' do
@@ -57,32 +57,32 @@ RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
         hits = [
           {
             '_source' => { 'data' => record_data },
-            '_score' => 0.5
-          }
+            '_score' => 0.5,
+          },
         ]
 
         expect(client).to receive(:search).with(
-          index: index,
+          index:,
           body: {
             query: {
               bool: {
                 must: [
                   {
                     match: {
-                      "etag": {
-                        query: etag
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
+                      etag: {
+                        query: etag,
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
         ).and_return({
-          'hits' => {
-            'hits' => hits
-          }
-        })
+                       'hits' => {
+                         'hits' => hits,
+                       },
+                     })
 
         results = subject.get(etag)
 
@@ -108,18 +108,18 @@ RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
           expect(client).to receive(:bulk).with(
             body: [
               {
-                index:  {
+                index: {
                   _index: index,
                   _id: record.etag,
                   data: {
                     data: record.to_h,
-                    etag: record.etag
-                  }
-                }
-              }
-            ]
+                    etag: record.etag,
+                  },
+                },
+              },
+            ],
           ).and_return(
-            'errors' => ['some errors']
+            'errors' => ['some errors'],
           )
 
           expect do
@@ -133,16 +133,16 @@ RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
           expect(client).to receive(:bulk).with(
             body: [
               {
-                index:  {
+                index: {
                   _index: index,
                   _id: record.etag,
                   data: {
                     data: record.to_h,
-                    etag: record.etag
-                  }
-                }
-              }
-            ]
+                    etag: record.etag,
+                  },
+                },
+              },
+            ],
           ).and_return({})
 
           expect do

@@ -5,7 +5,8 @@ require 'register_sources_sk/structs/partner'
 require 'register_sources_sk/structs/statna_prislusnost'
 
 module RegisterSourcesSk
-  class KonecniUzivateliaVyhod < Dry::Struct # End Users Benefits
+  # End Users Benefits
+  class KonecniUzivateliaVyhod < Dry::Struct
     transform_keys(&:to_sym)
 
     attribute? :Id, Types::Nominal::Integer.optional
