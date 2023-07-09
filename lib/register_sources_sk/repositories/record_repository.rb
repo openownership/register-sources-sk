@@ -66,6 +66,73 @@ module RegisterSourcesSk
         true
       end
 
+      def get_by_bods_identifiers(identifiers)
+        icos = [] # record.PartneriVerejnehoSektora.Ico
+        ids = [] # sk_record.KonecniUzivateliaVyhod.Id
+        identifiers.each do |identifier|
+          case identifier.schemeName
+          when 'SK Register Partnerov Verejného Sektora'
+            ids << identifier.id
+          when 'Ministry of Justice Business Register'
+            icos << identifier.id
+          end
+        end
+
+        return [] if icos.empty? && ids.empty?
+
+        process_results(
+          client.search(
+            index:,
+            body: {
+              query: {
+                bool: {
+                  should: icos.map { |ico|
+                    {
+                      bool: {
+                        must: [
+                          {
+                            nested: {
+                              path: "data.PartneriVerejnehoSektora",
+                              query: {
+                                bool: {
+                                  must: [
+                                    { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } },
+                                  ],
+                                },
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    }
+                  } + ids.map do |id|
+                    {
+                      bool: {
+                        must: [
+                          {
+                            nested: {
+                              path: "data.KonecniUzivateliaVyhod",
+                              query: {
+                                bool: {
+                                  must: [
+                                    { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } },
+                                  ],
+                                },
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    }
+                  end,
+                },
+              },
+              size: 10_000,
+            },
+          ),
+        ).map(&:record)
+      end
+
       private
 
       attr_reader :client, :index
