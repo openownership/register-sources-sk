@@ -66,7 +66,7 @@ module RegisterSourcesSk
         true
       end
 
-      def get_by_bods_identifiers(identifiers)
+      def get_by_bods_identifiers(identifiers, per_page: nil)
         icos = [] # record.PartneriVerejnehoSektora.Ico
         ids = [] # sk_record.KonecniUzivateliaVyhod.Id
         identifiers.each do |identifier|
@@ -127,7 +127,7 @@ module RegisterSourcesSk
                   end,
                 },
               },
-              size: 10_000,
+              size: per_page || 10_000,
             },
           ),
         ).map(&:record)
