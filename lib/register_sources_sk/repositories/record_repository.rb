@@ -10,10 +10,23 @@ module RegisterSourcesSk
 
       SearchResult = Struct.new(:record, :score)
 
+      class SearchResults < Array
+        def initialize(arr, total_count: nil, aggs: nil)
+          @total_count = total_count || arr.to_a.count
+          @aggs = aggs
+
+          super(arr)
+        end
+
+        attr_reader :total_count, :aggs
+      end
+
       def initialize(client: Config::ELASTICSEARCH_CLIENT, index: Config::ELASTICSEARCH_INDEX)
         @client = client
         @index = index
       end
+
+      attr_reader :client, :index
 
       def get(etag)
         process_results(
@@ -66,8 +79,7 @@ module RegisterSourcesSk
         true
       end
 
-      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-      def get_by_bods_identifiers(identifiers, per_page: nil)
+      def build_get_by_bods_identifiers(identifiers)
         icos = [] # record.PartneriVerejnehoSektora.Ico
         ids = [] # sk_record.KonecniUzivateliaVyhod.Id
         identifiers.each do |identifier|
@@ -79,75 +91,69 @@ module RegisterSourcesSk
           end
         end
 
-        return [] if icos.empty? && ids.empty?
+        return if icos.empty? && ids.empty?
 
-        process_results(
-          client.search(
-            index:,
-            body: {
-              query: {
+        {
+          bool: {
+            should: icos.map { |ico|
+              {
                 bool: {
-                  should: icos.map { |ico|
+                  must: [
                     {
-                      bool: {
-                        must: [
-                          {
-                            nested: {
-                              path: 'data.PartneriVerejnehoSektora',
-                              query: {
-                                bool: {
-                                  must: [
-                                    { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  } + ids.map do |id|
+                      nested: {
+                        path: "data.PartneriVerejnehoSektora",
+                        query: {
+                          bool: {
+                            must: [
+                              { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } },
+                            ],
+                          },
+                        },
+                      },
+                    },
+                  ],
+                },
+              }
+            } + ids.map do |id|
+              {
+                bool: {
+                  must: [
                     {
-                      bool: {
-                        must: [
-                          {
-                            nested: {
-                              path: 'data.KonecniUzivateliaVyhod',
-                              query: {
-                                bool: {
-                                  must: [
-                                    { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  end
-                }
-              },
-              size: per_page || 10_000
-            }
-          )
-        ).map(&:record)
+                      nested: {
+                        path: "data.KonecniUzivateliaVyhod",
+                        query: {
+                          bool: {
+                            must: [
+                              { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } },
+                            ],
+                          },
+                        },
+                      },
+                    },
+                  ],
+                },
+              }
+            end,
+          },
+        }
       end
-      # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       private
-
-      attr_reader :client, :index
 
       def process_results(results)
         hits = results.dig('hits', 'hits') || []
         hits = hits.sort { |hit| hit['_score'] }.reverse # rubocop:disable Lint/UnexpectedBlockArity # FIXME
+        total_count = results.dig('hits', 'total', 'value') || 0
 
         mapped = hits.map do |hit|
           SearchResult.new(map_es_record(hit['_source']), hit['_score'])
         end
 
-        mapped.sort_by(&:score).reverse
+        SearchResults.new(
+          mapped.sort_by(&:score).reverse,
+          total_count:,
+          aggs: results['aggregations'],
+        )
       end
 
       def map_es_record(record)
