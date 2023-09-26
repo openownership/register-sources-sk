@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'register_sources_sk/structs/partner'
 
 RSpec.describe RegisterSourcesSk::Partner do
   let(:valid_partner) do
     {
       Id: 123,
-      CisloVlozky: 456,
+      CisloVlozky: 456
     }
   end
 

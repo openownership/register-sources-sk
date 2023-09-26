@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'register_sources_sk/structs/statna_prislusnost'
 
 RSpec.describe RegisterSourcesSk::StatnaPrislusnost do
   let(:valid_statna_prislusnost) do
     {
-      StatistickyKod: "703",
+      StatistickyKod: '703'
     }
   end
 
@@ -14,7 +16,7 @@ RSpec.describe RegisterSourcesSk::StatnaPrislusnost do
 
     expect(statna_prislusnost.Id).to be_nil
     expect(statna_prislusnost.Meno).to be_nil
-    expect(statna_prislusnost.StatistickyKod).to eq "703"
+    expect(statna_prislusnost.StatistickyKod).to eq '703'
     expect(statna_prislusnost.PlatnostOd).to be_nil
     expect(statna_prislusnost.PlatnostDo).to be_nil
   end

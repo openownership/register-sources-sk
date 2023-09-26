@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'register_sources_sk/config/elasticsearch'
 
