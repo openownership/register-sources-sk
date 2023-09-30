@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'register_sources_sk/config/elasticsearch'
 
 require 'register_sources_sk/structs/record'
@@ -26,15 +28,15 @@ module RegisterSourcesSk
                     {
                       match: {
                         etag: {
-                          query: etag,
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-          ),
+                          query: etag
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          )
         ).first&.record
       end
 
@@ -50,22 +52,23 @@ module RegisterSourcesSk
               _id: record.etag,
               data: {
                 data: record.to_h,
-                etag: record.etag,
-              },
-            },
+                etag: record.etag
+              }
+            }
           }
         end
 
         result = client.bulk(body: operations)
 
         if result['errors']
-          print "Error result: ", result, "\n\n"
+          print 'Error result: ', result, "\n\n"
           raise ElasticsearchError, errors: result['errors']
         end
 
         true
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def get_by_bods_identifiers(identifiers, per_page: nil)
         icos = [] # record.PartneriVerejnehoSektora.Ico
         ids = [] # sk_record.KonecniUzivateliaVyhod.Id
@@ -92,18 +95,18 @@ module RegisterSourcesSk
                         must: [
                           {
                             nested: {
-                              path: "data.PartneriVerejnehoSektora",
+                              path: 'data.PartneriVerejnehoSektora',
                               query: {
                                 bool: {
                                   must: [
-                                    { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } },
-                                  ],
-                                },
-                              },
-                            },
-                          },
-                        ],
-                      },
+                                    { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
                     }
                   } + ids.map do |id|
                     {
@@ -111,27 +114,28 @@ module RegisterSourcesSk
                         must: [
                           {
                             nested: {
-                              path: "data.KonecniUzivateliaVyhod",
+                              path: 'data.KonecniUzivateliaVyhod',
                               query: {
                                 bool: {
                                   must: [
-                                    { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } },
-                                  ],
-                                },
-                              },
-                            },
-                          },
-                        ],
-                      },
+                                    { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
                     }
-                  end,
-                },
+                  end
+                }
               },
-              size: per_page || 10_000,
-            },
-          ),
+              size: per_page || 10_000
+            }
+          )
         ).map(&:record)
       end
+      # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       private
 
@@ -139,7 +143,7 @@ module RegisterSourcesSk
 
       def process_results(results)
         hits = results.dig('hits', 'hits') || []
-        hits = hits.sort { |hit| hit['_score'] }.reverse
+        hits = hits.sort { |hit| hit['_score'] }.reverse # rubocop:disable Lint/UnexpectedBlockArity # FIXME
 
         mapped = hits.map do |hit|
           SearchResult.new(map_es_record(hit['_source']), hit['_score'])

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'register_sources_sk/structs/record'
 
 RSpec.describe RegisterSourcesSk::Record do
@@ -10,37 +12,37 @@ RSpec.describe RegisterSourcesSk::Record do
           Meno: nil,
           Priezvisko: nil,
           DatumNarodenia: nil,
-          ObchodneMeno: "Example Slovak Company",
-          Ico: "1234567",
-          PlatnostOd: "2015-01-01T00:00:00+01:00",
+          ObchodneMeno: 'Example Slovak Company',
+          Ico: '1234567',
+          PlatnostOd: '2015-01-01T00:00:00+01:00',
           PlatnostDo: nil,
           Adresa: {
-            MenoUlice: "Example Street",
-            OrientacneCislo: "1234/1",
-            Mesto: "Example Place",
-            Psc: "12345",
-          },
-        },
+            MenoUlice: 'Example Street',
+            OrientacneCislo: '1234/1',
+            Mesto: 'Example Place',
+            Psc: '12345'
+          }
+        }
       ],
       KonecniUzivateliaVyhod: [
         {
           Id: 1,
-          Meno: "Example",
-          Priezvisko: "Person 1",
-          DatumNarodenia: "1950-01-01T00:00:00+02:00",
-          PlatnostOd: "2015-01-01T00:00:00+01:00",
+          Meno: 'Example',
+          Priezvisko: 'Person 1',
+          DatumNarodenia: '1950-01-01T00:00:00+02:00',
+          PlatnostOd: '2015-01-01T00:00:00+01:00',
           PlatnostDo: nil,
           StatnaPrislusnost: {
-            StatistickyKod: "703",
+            StatistickyKod: '703'
           },
           Adresa: {
-            MenoUlice: "Example Street",
-            OrientacneCislo: "1234/1",
-            Mesto: "Example Place",
-            Psc: "12345",
-          },
-        },
-      ],
+            MenoUlice: 'Example Street',
+            OrientacneCislo: '1234/1',
+            Mesto: 'Example Place',
+            Psc: '12345'
+          }
+        }
+      ]
     }
   end
 
@@ -59,39 +61,39 @@ RSpec.describe RegisterSourcesSk::Record do
           Meno: nil,
           Priezvisko: nil,
           DatumNarodenia: nil,
-          ObchodneMeno: "Example Slovak Company",
-          Ico: "1234567",
-          PlatnostOd: "2015-01-01T00:00:00+01:00",
+          ObchodneMeno: 'Example Slovak Company',
+          Ico: '1234567',
+          PlatnostOd: '2015-01-01T00:00:00+01:00',
           PlatnostDo: nil,
           Adresa: {
-            MenoUlice: "Example Street",
-            OrientacneCislo: "1234/1",
-            Mesto: "Example Place",
-            Psc: "12345",
-          },
+            MenoUlice: 'Example Street',
+            OrientacneCislo: '1234/1',
+            Mesto: 'Example Place',
+            Psc: '12345'
+          }
         }
-      ],
+      ]
     ]
     expect(record.KonecniUzivateliaVyhod).to eq [
       RegisterSourcesSk::KonecniUzivateliaVyhod[
         {
           Id: 1,
-          Meno: "Example",
-          Priezvisko: "Person 1",
-          DatumNarodenia: "1950-01-01T00:00:00+02:00",
-          PlatnostOd: "2015-01-01T00:00:00+01:00",
+          Meno: 'Example',
+          Priezvisko: 'Person 1',
+          DatumNarodenia: '1950-01-01T00:00:00+02:00',
+          PlatnostOd: '2015-01-01T00:00:00+01:00',
           PlatnostDo: nil,
           StatnaPrislusnost: {
-            StatistickyKod: "703",
+            StatistickyKod: '703'
           },
           Adresa: {
-            MenoUlice: "Example Street",
-            OrientacneCislo: "1234/1",
-            Mesto: "Example Place",
-            Psc: "12345",
-          },
+            MenoUlice: 'Example Street',
+            OrientacneCislo: '1234/1',
+            Mesto: 'Example Place',
+            Psc: '12345'
+          }
         }
-      ],
+      ]
     ]
   end
 end
