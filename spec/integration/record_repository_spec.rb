@@ -21,8 +21,8 @@ RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
 
   before do
     index_creator = RegisterSourcesSk::Services::EsIndexCreator.new(
-      es_index: index,
-      client: es_client
+      client: es_client,
+      index:
     )
     index_creator.create_index
   end
