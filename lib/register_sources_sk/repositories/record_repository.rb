@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-require 'register_sources_sk/config/elasticsearch'
-
-require 'register_sources_sk/structs/record'
+require_relative '../config/elasticsearch'
+require_relative '../structs/record'
 
 module RegisterSourcesSk
   module Repositories
     class RecordRepository
-      UnknownRecordKindError = Class.new(StandardError)
       ElasticsearchError = Class.new(StandardError)
 
       SearchResult = Struct.new(:record, :score)
 
-      def initialize(client: Config::ELASTICSEARCH_CLIENT, index: Config::ES_INDEX)
+      def initialize(client: Config::ELASTICSEARCH_CLIENT, index: Config::ELASTICSEARCH_INDEX)
         @client = client
         @index = index
       end

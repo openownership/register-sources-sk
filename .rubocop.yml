@@ -26,13 +26,13 @@ RSpec/ExampleLength:
 RSpec/FilePath:
   Exclude:
     - spec/integration/record_repository_spec.rb
-    - spec/register_sources_sk.rb
+    - spec/unit/register_sources_sk.rb
     - spec/unit/repositories/record_repository_spec.rb
     - spec/unit/services/es_index_creator_spec.rb
     - spec/unit/structs/adresa_spec.rb
     - spec/unit/structs/konecni_uzivatelia_vyhod_spec.rb
-    - spec/unit/structs/partneri_verejneho_sektora_spec.rb
     - spec/unit/structs/partner_spec.rb
+    - spec/unit/structs/partneri_verejneho_sektora_spec.rb
     - spec/unit/structs/record_spec.rb
     - spec/unit/structs/statna_prislusnost_spec.rb
 RSpec/MessageSpies:
