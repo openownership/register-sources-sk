@@ -79,6 +79,7 @@ module RegisterSourcesSk
         true
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def build_get_by_bods_identifiers(identifiers)
         icos = [] # record.PartneriVerejnehoSektora.Ico
         ids = [] # sk_record.KonecniUzivateliaVyhod.Id
@@ -101,18 +102,18 @@ module RegisterSourcesSk
                   must: [
                     {
                       nested: {
-                        path: "data.PartneriVerejnehoSektora",
+                        path: 'data.PartneriVerejnehoSektora',
                         query: {
                           bool: {
                             must: [
-                              { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } },
-                            ],
-                          },
-                        },
-                      },
-                    },
-                  ],
-                },
+                              { match: { 'data.PartneriVerejnehoSektora.Ico': { query: ico } } }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             } + ids.map do |id|
               {
@@ -120,23 +121,24 @@ module RegisterSourcesSk
                   must: [
                     {
                       nested: {
-                        path: "data.KonecniUzivateliaVyhod",
+                        path: 'data.KonecniUzivateliaVyhod',
                         query: {
                           bool: {
                             must: [
-                              { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } },
-                            ],
-                          },
-                        },
-                      },
-                    },
-                  ],
-                },
+                              { match: { 'data.KonecniUzivateliaVyhod.Id': { query: id } } }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
-            end,
-          },
+            end
+          }
         }
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       private
 
@@ -152,7 +154,7 @@ module RegisterSourcesSk
         SearchResults.new(
           mapped.sort_by(&:score).reverse,
           total_count:,
-          aggs: results['aggregations'],
+          aggs: results['aggregations']
         )
       end
 
