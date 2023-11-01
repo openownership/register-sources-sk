@@ -2,6 +2,8 @@
 
 require 'register_sources_sk/repositories/record_repository'
 
+BodsIdentifier = Struct.new(:id, :schemeName)
+
 RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
   subject { described_class.new(client:, index:) }
 
@@ -152,6 +154,74 @@ RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
           end.not_to raise_error
         end
       end
+    end
+  end
+
+  describe '#build_get_by_bods_identifiers' do
+    it 'builds query for searching by bods identifiers' do
+      identifiers = [
+        BodsIdentifier.new('3', 'SK Register Partnerov Verejného Sektora'),
+        BodsIdentifier.new('1234567', 'Ministry of Justice Business Register')
+      ]
+
+      query = subject.build_get_by_bods_identifiers(identifiers)
+
+      expect(query).to eq(
+        {
+          bool: {
+            should: [
+              {
+                bool: {
+                  must: [
+                    {
+                      nested: {
+                        path: 'data.PartneriVerejnehoSektora',
+                        query: {
+                          bool: {
+                            must: [
+                              {
+                                match: {
+                                  'data.PartneriVerejnehoSektora.Ico': {
+                                    query: '1234567'
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                bool: {
+                  must: [
+                    {
+                      nested: {
+                        path: 'data.KonecniUzivateliaVyhod',
+                        query: {
+                          bool: {
+                            must: [
+                              {
+                                match: {
+                                  'data.KonecniUzivateliaVyhod.Id': {
+                                    query: '3'
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      )
     end
   end
 end
