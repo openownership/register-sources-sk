@@ -11,38 +11,28 @@ Metrics/ClassLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
+RSpec/FilePath:
+  Enabled: false
 Style/Documentation:
   Enabled: false
 #-------------------------------------------------------------------------------
 RSpec/ExampleLength:
   Exclude:
-    - spec/integration/record_repository_spec.rb
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/integration/repository_spec.rb
+    - spec/unit/repository_spec.rb
     - spec/unit/structs/adresa_spec.rb
     - spec/unit/structs/konecni_uzivatelia_vyhod_spec.rb
-    - spec/unit/structs/partneri_verejneho_sektora_spec.rb
-    - spec/unit/structs/record_spec.rb
-    - spec/unit/structs/statna_prislusnost_spec.rb
-RSpec/FilePath:
-  Exclude:
-    - spec/integration/record_repository_spec.rb
-    - spec/unit/register_sources_sk.rb
-    - spec/unit/repositories/record_repository_spec.rb
-    - spec/unit/services/es_index_creator_spec.rb
-    - spec/unit/structs/adresa_spec.rb
-    - spec/unit/structs/konecni_uzivatelia_vyhod_spec.rb
-    - spec/unit/structs/partner_spec.rb
     - spec/unit/structs/partneri_verejneho_sektora_spec.rb
     - spec/unit/structs/record_spec.rb
     - spec/unit/structs/statna_prislusnost_spec.rb
 RSpec/MessageSpies:
   Exclude:
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/unit/repository_spec.rb
     - spec/unit/services/es_index_creator_spec.rb
 RSpec/MultipleExpectations:
   Exclude:
-    - spec/integration/record_repository_spec.rb
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/integration/repository_spec.rb
+    - spec/unit/repository_spec.rb
     - spec/unit/structs/adresa_spec.rb
     - spec/unit/structs/konecni_uzivatelia_vyhod_spec.rb
     - spec/unit/structs/partneri_verejneho_sektora_spec.rb
@@ -51,16 +41,16 @@ RSpec/MultipleExpectations:
     - spec/unit/structs/statna_prislusnost_spec.rb
 RSpec/NamedSubject:
   Exclude:
-    - spec/integration/record_repository_spec.rb
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/integration/repository_spec.rb
+    - spec/unit/repository_spec.rb
     - spec/unit/services/es_index_creator_spec.rb
 RSpec/NestedGroups:
   Exclude:
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/unit/repository_spec.rb
 RSpec/StubbedMock:
   Exclude:
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/unit/repository_spec.rb
 RSpec/VerifiedDoubles:
   Exclude:
-    - spec/unit/repositories/record_repository_spec.rb
+    - spec/unit/repository_spec.rb
     - spec/unit/services/es_index_creator_spec.rb

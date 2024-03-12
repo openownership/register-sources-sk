@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'register_sources_sk/repositories/record_repository'
+require 'register_sources_sk/repository'
 
 BodsIdentifier = Struct.new(:id, :schemeName)
 
-RSpec.describe RegisterSourcesSk::Repositories::RecordRepository do
+RSpec.describe RegisterSourcesSk::Repository do
   subject { described_class.new(client:, index:) }
 
   let(:client) { double 'client' }
