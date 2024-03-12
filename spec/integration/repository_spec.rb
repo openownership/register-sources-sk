@@ -22,6 +22,10 @@ RSpec.describe RegisterSourcesSk::Repository do
     index_creator.create_index(index)
   end
 
+  after do
+    es_client.indices.delete(index:)
+  end
+
   describe '#store' do
     it 'stores' do
       records = [record]
